@@ -110,6 +110,12 @@ button {
   cursor: pointer;
 }
 
+a:focus-visible,
+button:focus-visible {
+  outline: 3px solid var(--tertiary-color);
+  outline-offset: 3px;
+}
+
 .divider {
   border-bottom: 2px solid var(--primary-color);
 }
