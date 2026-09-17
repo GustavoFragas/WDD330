@@ -13,16 +13,24 @@ test("shows a message when the cart is empty", async () => {
       renderedHtml = value;
     },
   };
+  const headerElement = { innerHTML: "" };
+  const footerElement = { innerHTML: "" };
 
-  globalThis.localStorage = {
+  global.localStorage = {
     getItem() {
       return null;
     },
   };
-  globalThis.document = {
+  global.fetch = async (path) => ({
+    text: async () =>
+      path.includes("header") ? "<div>Header</div>" : "Footer",
+  });
+  global.document = {
     querySelector(selector) {
-      assert.equal(selector, ".product-list");
-      return productList;
+      if (selector === ".product-list") return productList;
+      if (selector === "#main-header") return headerElement;
+      if (selector === "#main-footer") return footerElement;
+      return null;
     },
   };
 
@@ -36,10 +44,12 @@ test("shows a message when the cart is empty", async () => {
 
   try {
     await server.ssrLoadModule(`/js/cart.js?t=${Date.now()}`);
+    await new Promise((resolve) => setImmediate(resolve));
     assert.match(renderedHtml, /cart is empty/i);
   } finally {
     await server.close();
-    delete globalThis.document;
-    delete globalThis.localStorage;
+    delete global.document;
+    delete global.fetch;
+    delete global.localStorage;
   }
 });
