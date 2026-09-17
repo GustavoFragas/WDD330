@@ -1,8 +1,20 @@
+import { cpSync } from "fs";
 import { resolve } from "path";
 import { defineConfig } from "vite";
 
 export default defineConfig({
   root: "src/",
+
+  plugins: [
+    {
+      name: "copy-json",
+      closeBundle() {
+        cpSync(resolve(__dirname, "src/json"), resolve(__dirname, "dist/json"), {
+          recursive: true,
+        });
+      },
+    },
+  ],
 
   build: {
     outDir: "../dist",
