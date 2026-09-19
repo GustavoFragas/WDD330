@@ -157,6 +157,24 @@ button:focus-visible {
   text-align: center;
 }
 
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  list-style-type: none;
+  text-align: center;
+}
+
+.product-grid a {
+  color: var(--dark-grey);
+  font-size: var(--small-font);
+  text-decoration: none;
+}
+
+.product-grid img {
+  width: min(100px, 90%);
+}
+
 .products {
   margin-top: 2rem;
   padding: 1rem;
@@ -255,6 +273,10 @@ button:focus-visible {
 
   .mission {
     font-size: 1.2em;
+  }
+
+  .product-grid {
+    grid-template-columns: repeat(4, 1fr);
   }
 
   .cart-card {

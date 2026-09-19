@@ -34,6 +34,11 @@ export function renderWithTemplate(template, parentElement, data, callback) {
   }
 }
 
+export function renderListWithTemplate(template, parentElement, list) {
+  const htmlStrings = list.map(template);
+  parentElement.innerHTML = htmlStrings.join("");
+}
+
 export async function loadTemplate(path) {
   const res = await fetch(path);
   const template = await res.text();
