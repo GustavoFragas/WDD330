@@ -265,6 +265,11 @@ button:focus-visible {
   grid-column: 3;
 }
 
+.cart-total {
+  font-weight: bold;
+  text-align: right;
+}
+
 @media screen and (min-width: 500px) {
   body {
     max-width: 1080px;
