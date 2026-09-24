@@ -26,10 +26,10 @@ test("loads a category and a product from the API", async () => {
   });
 
   try {
-    const { default: ProductData } = await server.ssrLoadModule(
-      `/js/ProductData.mjs?t=${Date.now()}`,
+    const { default: ExternalServices } = await server.ssrLoadModule(
+      `/js/ExternalServices.mjs?t=${Date.now()}`,
     );
-    const dataSource = new ProductData();
+    const dataSource = new ExternalServices();
 
     assert.deepEqual(await dataSource.getData("backpacks"), [product]);
     assert.equal(await dataSource.findProductById("20CXG"), product);

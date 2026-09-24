@@ -9,3 +9,11 @@ checkout.init();
 document.querySelector("#zip").addEventListener("blur", () => {
   checkout.calculateOrderTotal();
 });
+
+document
+  .querySelector("#checkout-form")
+  .addEventListener("submit", async (event) => {
+    event.preventDefault();
+    checkout.calculateOrderTotal();
+    await checkout.checkout(event.target);
+  });
