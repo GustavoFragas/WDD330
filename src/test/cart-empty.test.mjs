@@ -15,6 +15,7 @@ test("shows a message when the cart is empty", async () => {
   };
   const headerElement = { innerHTML: "" };
   const footerElement = { innerHTML: "" };
+  const cartTotal = { textContent: "" };
 
   global.localStorage = {
     getItem() {
@@ -28,6 +29,7 @@ test("shows a message when the cart is empty", async () => {
   global.document = {
     querySelector(selector) {
       if (selector === ".product-list") return productList;
+      if (selector === ".cart-total") return cartTotal;
       if (selector === "#main-header") return headerElement;
       if (selector === "#main-footer") return footerElement;
       return null;
