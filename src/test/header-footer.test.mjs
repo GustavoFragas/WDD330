@@ -5,6 +5,7 @@ import {
   loadHeaderFooter,
   loadTemplate,
   renderWithTemplate,
+  updateCartCount,
 } from "../js/utils.mjs";
 
 test("renderWithTemplate inserts the template and calls the callback", () => {
@@ -45,7 +46,9 @@ test("loadHeaderFooter renders both partials", async () => {
   global.fetch = async (path) => ({ text: async () => templates[path] });
   global.document = {
     querySelector(selector) {
-      return selector === "#main-header" ? headerElement : footerElement;
+      if (selector === "#main-header") return headerElement;
+      if (selector === "#main-footer") return footerElement;
+      return null;
     },
   };
 
@@ -55,6 +58,46 @@ test("loadHeaderFooter renders both partials", async () => {
     assert.equal(footerElement.innerHTML, templates["/partials/footer.html"]);
   } finally {
     delete global.fetch;
+    delete global.document;
+  }
+});
+
+test("cart count follows the items in localStorage", () => {
+  const countElement = { textContent: "" };
+  const cartLink = {
+    label: "",
+    setAttribute(name, value) {
+      assert.equal(name, "aria-label");
+      this.label = value;
+    },
+  };
+  let cart = [{ Id: "first" }, { Id: "second" }];
+
+  global.localStorage = {
+    getItem(key) {
+      assert.equal(key, "so-cart");
+      return JSON.stringify(cart);
+    },
+  };
+  global.document = {
+    querySelector(selector) {
+      if (selector === ".cart-count") return countElement;
+      if (selector === ".cart a") return cartLink;
+      return null;
+    },
+  };
+
+  try {
+    updateCartCount();
+    assert.equal(countElement.textContent, "2");
+    assert.equal(cartLink.label, "Cart, 2 items");
+
+    cart = [];
+    updateCartCount();
+    assert.equal(countElement.textContent, "");
+    assert.equal(cartLink.label, "Cart, 0 items");
+  } finally {
+    delete global.localStorage;
     delete global.document;
   }
 });
