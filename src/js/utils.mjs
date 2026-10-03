@@ -13,6 +13,19 @@ export function getLocalStorage(key) {
 export function setLocalStorage(key, data) {
   localStorage.setItem(key, JSON.stringify(data));
 }
+
+export function updateCartCount() {
+  const countElement = document.querySelector(".cart-count");
+  const cartLink = document.querySelector(".cart a");
+  if (!countElement || !cartLink) return;
+
+  const count = (getLocalStorage("so-cart") || []).length;
+  countElement.textContent = count > 0 ? String(count) : "";
+  cartLink.setAttribute(
+    "aria-label",
+    `Cart, ${count} ${count === 1 ? "item" : "items"}`,
+  );
+}
 // set a listener for both touchend and click
 export function setClick(selector, callback) {
   qs(selector).addEventListener("touchend", (event) => {
@@ -53,4 +66,5 @@ export async function loadHeaderFooter() {
 
   renderWithTemplate(headerTemplate, headerElement);
   renderWithTemplate(footerTemplate, footerElement);
+  updateCartCount();
 }

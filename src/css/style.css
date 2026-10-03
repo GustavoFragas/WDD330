@@ -133,6 +133,29 @@ button:focus-visible {
   width: 25px;
 }
 
+.cart a {
+  position: relative;
+  display: inline-block;
+}
+
+.cart-count {
+  position: absolute;
+  top: -0.5rem;
+  right: -0.7rem;
+  min-width: 1.3rem;
+  padding: 0 0.2rem;
+  border-radius: 1rem;
+  background-color: var(--tertiary-color);
+  color: white;
+  font-size: 0.7rem;
+  line-height: 1.3rem;
+  text-align: center;
+}
+
+.cart-count:empty {
+  display: none;
+}
+
 .cart:hover svg {
   fill: gray;
 }

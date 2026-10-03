@@ -2,6 +2,7 @@ import {
   getLocalStorage,
   loadHeaderFooter,
   setLocalStorage,
+  updateCartCount,
 } from "./utils.mjs";
 
 function renderCartContents() {
@@ -26,6 +27,7 @@ export function removeCartItem(productId) {
   const updatedCart = cartItems.filter((item) => item.Id !== productId);
   setLocalStorage("so-cart", updatedCart);
   renderCartContents();
+  updateCartCount();
 }
 
 function cartItemTemplate(item) {
