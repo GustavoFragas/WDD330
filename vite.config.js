@@ -7,9 +7,12 @@ export default defineConfig({
 
   plugins: [
     {
-      name: "copy-json",
+      name: "copy-static-files",
       closeBundle() {
         cpSync(resolve(__dirname, "src/json"), resolve(__dirname, "dist/json"), {
+          recursive: true,
+        });
+        cpSync(resolve(__dirname, "final_project"), resolve(__dirname, "dist/final_project"), {
           recursive: true,
         });
       },
