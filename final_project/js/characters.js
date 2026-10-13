@@ -9,7 +9,7 @@ export function favoriteButton(character, favorites, onToggle) {
   button.className = "favorite-button icon-button";
   button.dataset.characterId = character.id;
   const icon = document.createElement("img");
-  icon.src = "images/icons/heart.svg";
+  icon.src = "/final_project/images/icons/heart.svg";
   icon.alt = "";
   icon.width = 20;
   icon.height = 20;
