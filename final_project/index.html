@@ -3,86 +3,172 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Explore Rick and Morty characters, browse episodes, and save your favorites."
+    />
+    <meta name="author" content="Gustavo Fragas" />
     <title>Rick and Morty Explorer</title>
+    <link rel="icon" href="images/icons/house.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="css/styles.css" />
     <script src="js/main.js" type="module"></script>
   </head>
   <body>
-    <header>
-      <h1>Rick and Morty Explorer</h1>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <header class="site-header">
+      <div class="header-inner">
+        <a class="brand" href="#home" aria-label="Rick and Morty Explorer home">
+          <img
+            src="images/rick-and-morty-logo.png"
+            width="330"
+            height="101"
+            alt=""
+          />
+          <span class="brand-subtitle">EXPLORER</span>
+        </a>
+        <nav class="main-nav" aria-label="Main navigation">
+          <a href="#home"><img src="images/icons/house.svg" alt="" />Home</a>
+          <a href="#characters"
+            ><img src="images/icons/users.svg" alt="" />Characters</a
+          >
+          <a href="#episodes"
+            ><img src="images/icons/clapperboard.svg" alt="" />Episodes</a
+          >
+          <a href="#favorites"
+            ><img src="images/icons/heart.svg" alt="" />Favorites
+            <span id="favorite-count">0</span></a
+          >
+        </nav>
+      </div>
     </header>
 
-    <main>
+    <main id="main-content" tabindex="-1">
+      <h1 class="visually-hidden">Rick and Morty Explorer</h1>
+      <section id="show-info" class="show-info" aria-labelledby="show-title">
+        <div id="show-poster"></div>
+        <div>
+          <p class="eyebrow">THE SERIES</p>
+          <h2 id="show-title">Rick and Morty</h2>
+          <p id="show-message" role="status">Loading series information...</p>
+          <p id="show-genres"></p>
+          <a href="https://www.tvmaze.com/shows/216/rick-and-morty"
+            >Series information on TVmaze</a
+          >
+          <button id="show-retry" type="button" class="secondary" hidden>
+            Try again
+          </button>
+        </div>
+      </section>
+
+      <div class="collection-heading">
+        <h2 id="view-title" tabindex="-1">Characters</h2>
+        <button id="random-character" type="button" class="secondary">
+          <img src="images/icons/shuffle.svg" alt="" />Random character
+        </button>
+      </div>
+      <p id="notice" class="notice" role="status"></p>
       <form id="search-form" role="search">
-        <label for="search-input">Search characters</label>
+        <label for="search-input" class="visually-hidden"
+          >Search characters</label
+        >
         <div class="search-controls">
           <input
             id="search-input"
             name="name"
             type="search"
-            placeholder="Character name"
+            placeholder="Search characters..."
           />
-          <button type="submit">Search</button>
-          <button type="reset" class="secondary">Clear filters</button>
+          <button type="submit">
+            <img src="images/icons/search.svg" alt="" />Search
+          </button>
         </div>
-        <div class="filters">
-          <div>
+      </form>
+
+      <div id="workspace" class="workspace">
+        <details id="filter-panel" class="filter-panel">
+          <summary>Filters</summary>
+          <div class="filters">
             <label for="status-filter">Status</label>
-            <select id="status-filter" name="status">
+            <select id="status-filter" name="status" form="search-form">
               <option value="">All statuses</option>
               <option value="alive">Alive</option>
               <option value="dead">Dead</option>
               <option value="unknown">Unknown</option>
             </select>
-          </div>
-          <div>
             <label for="species-filter">Species</label>
             <input
               id="species-filter"
               name="species"
               type="search"
+              form="search-form"
               placeholder="Any species"
             />
-          </div>
-          <div>
             <label for="gender-filter">Gender</label>
-            <select id="gender-filter" name="gender">
+            <select id="gender-filter" name="gender" form="search-form">
               <option value="">All genders</option>
               <option value="female">Female</option>
               <option value="male">Male</option>
               <option value="genderless">Genderless</option>
               <option value="unknown">Unknown</option>
             </select>
+            <button type="submit" form="search-form">Apply filters</button>
+            <button type="reset" form="search-form" class="secondary">
+              Clear filters
+            </button>
           </div>
+        </details>
+        <div class="collection">
+          <p id="message" role="status">Loading characters...</p>
+          <button id="retry" type="button" class="secondary" hidden>
+            Try again
+          </button>
+          <div id="results" class="character-grid"></div>
+          <ul id="episode-results" class="episode-list" hidden></ul>
+          <nav id="pagination" class="pagination" aria-label="Result pages">
+            <button
+              id="previous-page"
+              class="icon-button secondary"
+              type="button"
+              aria-label="Previous page"
+              title="Previous page"
+              disabled
+            >
+              <img src="images/icons/arrow-left.svg" alt="" />
+            </button>
+            <span id="page-label">Page 1</span>
+            <button
+              id="next-page"
+              class="icon-button secondary"
+              type="button"
+              aria-label="Next page"
+              title="Next page"
+              disabled
+            >
+              <img src="images/icons/arrow-right.svg" alt="" />
+            </button>
+          </nav>
         </div>
-      </form>
-
-      <h2>Characters</h2>
-      <p id="message" role="status">Loading characters...</p>
-      <div id="results" class="character-grid"></div>
-      <nav class="pagination" aria-label="Character pages">
-        <button id="previous-page" type="button" disabled>Previous</button>
-        <span id="page-label">Page 1</span>
-        <button id="next-page" type="button" disabled>Next</button>
-      </nav>
+      </div>
     </main>
 
     <dialog id="character-dialog" aria-labelledby="detail-name">
       <div class="dialog-heading">
-        <h2 id="detail-name"></h2>
+        <h2 id="detail-name">Character details</h2>
+        <div id="detail-favorite"></div>
         <form method="dialog">
           <button
-            class="close-button"
+            class="icon-button secondary"
             aria-label="Close details"
             title="Close details"
             autofocus
           >
-            &times;
+            <img src="images/icons/x.svg" alt="" />
           </button>
         </form>
       </div>
+      <p id="detail-notice" class="notice" role="status"></p>
       <div class="detail-content">
-        <img id="detail-image" alt="" width="300" height="300" />
+        <div id="detail-portrait"></div>
         <dl>
           <dt>Status</dt>
           <dd id="detail-status"></dd>
@@ -96,11 +182,32 @@
           <dd id="detail-location"></dd>
         </dl>
       </div>
+      <section
+        class="detail-episode-section"
+        aria-labelledby="detail-episodes-title"
+      >
+        <h2 id="detail-episodes-title">Episodes</h2>
+        <p id="detail-message" role="status"></p>
+        <button id="detail-retry" type="button" class="secondary" hidden>
+          Try again
+        </button>
+        <ul id="detail-episodes" class="episode-list"></ul>
+      </section>
     </dialog>
 
     <footer>
-      Data from
-      <a href="https://rickandmortyapi.com/">The Rick and Morty API</a>
+      <div class="footer-inner">
+        <p>
+          Rick and Morty Explorer<br /><span
+            >Fan project. Not affiliated with Adult Swim.</span
+          >
+        </p>
+        <p>
+          Data:
+          <a href="https://rickandmortyapi.com/">The Rick and Morty API</a>
+          &amp; <a href="https://www.tvmaze.com/">TVmaze</a>
+        </p>
+      </div>
     </footer>
   </body>
 </html>
