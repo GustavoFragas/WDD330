@@ -42,17 +42,28 @@ label {
   gap: 0.5rem;
 }
 
+.filters {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
 input,
+select,
 button {
   font: inherit;
   padding: 0.75rem;
   border-radius: 4px;
 }
 
-input {
+input,
+select {
   width: 100%;
   min-width: 0;
   border: 1px solid #aeb8ae;
+  background: #fff;
+  color: #151818;
 }
 
 button {
@@ -62,8 +73,22 @@ button {
   cursor: pointer;
 }
 
-button:hover {
+button:hover:not(:disabled) {
   background: #b7f59a;
+}
+
+.search-controls button {
+  flex-shrink: 0;
+}
+
+button.secondary {
+  background: #d7dddd;
+}
+
+button:disabled {
+  background: #414947;
+  color: #b7c1bc;
+  cursor: default;
 }
 
 :focus-visible {
@@ -82,10 +107,16 @@ h2 {
 }
 
 .character-card {
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
   border: 1px solid #4a5350;
   border-radius: 4px;
   background: #2d3230;
+}
+
+.character-card button {
+  margin: auto 0.75rem 0.75rem;
 }
 
 .character-card img {
@@ -115,6 +146,89 @@ footer {
 
 footer a {
   color: #9fe870;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 2rem;
+}
+
+.pagination span {
+  min-width: 6rem;
+  text-align: center;
+}
+
+dialog {
+  width: min(640px, calc(100% - 2rem));
+  max-height: calc(100% - 2rem);
+  padding: 1.25rem;
+  border: 1px solid #4a5350;
+  border-radius: 4px;
+  background: #202323;
+  color: #f2f4f2;
+  overflow-wrap: anywhere;
+}
+
+dialog::backdrop {
+  background: rgb(0 0 0 / 70%);
+}
+
+.dialog-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.dialog-heading h2 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.close-button {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  font-size: 1.5rem;
+}
+
+.detail-content {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: start;
+  gap: 1.25rem;
+}
+
+.detail-content img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: cover;
+}
+
+.detail-content dl {
+  margin: 0;
+}
+
+.detail-content dt {
+  color: #c9d2cd;
+}
+
+.detail-content dd {
+  margin: 0.25rem 0 1rem;
+}
+
+@media (max-width: 600px) {
+  .filters,
+  .detail-content {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 420px) {

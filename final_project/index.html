@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Rick and Morty Explorer</title>
     <link rel="stylesheet" href="css/styles.css" />
-    <script src="js/main.js" defer></script>
+    <script src="js/main.js" type="module"></script>
   </head>
   <body>
     <header>
@@ -16,15 +16,87 @@
       <form id="search-form" role="search">
         <label for="search-input">Search characters</label>
         <div class="search-controls">
-          <input id="search-input" type="search" placeholder="Character name" />
+          <input
+            id="search-input"
+            name="name"
+            type="search"
+            placeholder="Character name"
+          />
           <button type="submit">Search</button>
+          <button type="reset" class="secondary">Clear filters</button>
+        </div>
+        <div class="filters">
+          <div>
+            <label for="status-filter">Status</label>
+            <select id="status-filter" name="status">
+              <option value="">All statuses</option>
+              <option value="alive">Alive</option>
+              <option value="dead">Dead</option>
+              <option value="unknown">Unknown</option>
+            </select>
+          </div>
+          <div>
+            <label for="species-filter">Species</label>
+            <input
+              id="species-filter"
+              name="species"
+              type="search"
+              placeholder="Any species"
+            />
+          </div>
+          <div>
+            <label for="gender-filter">Gender</label>
+            <select id="gender-filter" name="gender">
+              <option value="">All genders</option>
+              <option value="female">Female</option>
+              <option value="male">Male</option>
+              <option value="genderless">Genderless</option>
+              <option value="unknown">Unknown</option>
+            </select>
+          </div>
         </div>
       </form>
 
       <h2>Characters</h2>
       <p id="message" role="status">Loading characters...</p>
       <div id="results" class="character-grid"></div>
+      <nav class="pagination" aria-label="Character pages">
+        <button id="previous-page" type="button" disabled>Previous</button>
+        <span id="page-label">Page 1</span>
+        <button id="next-page" type="button" disabled>Next</button>
+      </nav>
     </main>
+
+    <dialog id="character-dialog" aria-labelledby="detail-name">
+      <div class="dialog-heading">
+        <h2 id="detail-name"></h2>
+        <form method="dialog">
+          <button
+            class="close-button"
+            aria-label="Close details"
+            title="Close details"
+            autofocus
+          >
+            &times;
+          </button>
+        </form>
+      </div>
+      <div class="detail-content">
+        <img id="detail-image" alt="" width="300" height="300" />
+        <dl>
+          <dt>Status</dt>
+          <dd id="detail-status"></dd>
+          <dt>Species</dt>
+          <dd id="detail-species"></dd>
+          <dt>Gender</dt>
+          <dd id="detail-gender"></dd>
+          <dt>Origin</dt>
+          <dd id="detail-origin"></dd>
+          <dt>Last known location</dt>
+          <dd id="detail-location"></dd>
+        </dl>
+      </div>
+    </dialog>
 
     <footer>
       Data from
