@@ -1,7 +1,43 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { access, readFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import { createServer } from "vite";
+
+test("local assets resolve under final_project with or without a trailing slash", async () => {
+  const root = new URL("../../", import.meta.url);
+  const sources = [
+    "final_project/index.html",
+    "final_project/js/characters.js",
+  ];
+  const entries = [
+    "/final_project",
+    "/final_project/",
+    "/final_project/index.html",
+  ];
+
+  for (const source of sources) {
+    const content = await readFile(new URL(source, root), "utf8");
+    const assets = [
+      ...content.matchAll(
+        /["']((?:\/final_project\/)?(?:images|css|js)\/[^"']+)["']/g,
+      ),
+    ];
+    assert(assets.length > 0, `No local assets checked in ${source}`);
+    for (const [, asset] of assets) {
+      for (const entry of entries) {
+        for (const suffix of ["", "?check=1#characters"]) {
+          const url = new URL(asset, `https://example.com${entry}${suffix}`);
+          assert(
+            url.pathname.startsWith("/final_project/"),
+            `${asset} from ${entry}${suffix}`,
+          );
+          await access(new URL(`.${url.pathname}`, root));
+        }
+      }
+    }
+  }
+});
 
 test("character API filters, pagination and errors", async (t) => {
   const originalFetch = global.fetch;
